@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +22,8 @@ public class UserDTO {
     @Size(min = 11, max = 11, message = "Número inválido")
     private String telephone;
     private String token;
-    private String expiration;
+    private Timestamp expiration;
+    private String accountId;
 
     public UserDTO(User entity) {
         this.id = entity.getId().toString();
@@ -30,6 +32,7 @@ public class UserDTO {
         this.cpf = entity.getCpf();
         this.telephone = entity.getTelephone();
         this.token = entity.getToken();
-        this.expiration = entity.getExpiration().toString();
+        this.expiration = entity.getExpiration();
+        this.accountId = entity.getAccountId().toString();
     }
 }

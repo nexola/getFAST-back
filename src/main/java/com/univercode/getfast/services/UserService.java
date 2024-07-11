@@ -84,6 +84,9 @@ public class UserService {
         entity.setTelephone(dto.getTelephone());
         entity.setCpf(dto.getCpf());
         entity.setLastUpdate(LocalDateTime.now());
+        entity.setToken(entity.getToken());
+        entity.setExpiration(entity.getExpiration());
+        entity.setAccountId(UUID.fromString(dto.getAccountId()));
     }
 
     public UserDTO login(UserForm form) {

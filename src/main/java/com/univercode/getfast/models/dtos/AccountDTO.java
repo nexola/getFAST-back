@@ -34,9 +34,9 @@ public class AccountDTO {
     private Boolean deleted;
     private Timestamp lastUpdate;
     private String token;
-    private String expiration;
+    private Timestamp expiration;
 
-    public AccountDTO(String id, String name, String email, String telephone, String cnpj, String cpf, String cep, String address, String number, String neighborhood, String city, String state, String complement, Timestamp creationDate, Boolean deleted, Timestamp lastUpdate, String token, String expiration) {
+    public AccountDTO(String id, String name, String email, String telephone, String cnpj, String cpf, String cep, String address, String number, String neighborhood, String city, String state, String complement, Timestamp creationDate, Boolean deleted, Timestamp lastUpdate, String token, Timestamp expiration) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -75,6 +75,6 @@ public class AccountDTO {
         this.deleted = entity.getDeleted();
         this.lastUpdate = Timestamp.valueOf(entity.getLastUpdate());
         this.token = entity.getToken();
-        this.expiration = entity.getExpiration().toString();
+        this.expiration = entity.getExpiration();
     }
 }

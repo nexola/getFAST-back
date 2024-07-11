@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -33,14 +34,18 @@ public class User extends Domain {
     @Column(name = "expiration")
     private Timestamp expiration;
 
+    @Column(name = "account_id")
+    private UUID accountId;
+
     public User() {
     }
 
-    public User(String name, String email, String password, String cpf, String telephone) {
+    public User(String name, String email, String password, String cpf, String telephone, UUID accountId) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.cpf = cpf;
         this.telephone = telephone;
+        this.accountId = accountId;
     }
 }
