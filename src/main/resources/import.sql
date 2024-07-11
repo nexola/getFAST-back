@@ -1,0 +1,2 @@
+-- INSERT INTO tb_account(name, email, cpf, telephone, password, address, number, neighborhood, cep, city, state, creation_date, deleted)
+-- VALUES ('Vitor', 'vitor@email.com', '32245456654', '11950654321', 'abc123', 'Rua Paulo Falleiros do Nascimento', '19', 'Jd Faleiros', '08532370', 'Ferraz de Vasconcelos', 'SP', '2024-07-10 14:14:10', false);
