@@ -17,17 +17,24 @@ public class AccountDTO {
     @NotBlank(message = "Campo obrigatório")
     private String name;
     @Email(message = "Email inválido")
+    @NotBlank(message = "Campo obrigatório")
     private String email;
     @Size(min = 11, max = 11, message = "Número inválido")
     private String telephone;
+    @NotBlank(message = "Campo obrigatório")
     private String cnpj;
     private String cpf;
+    @NotBlank(message = "Campo obrigatório")
     private String cep;
+    @NotBlank(message = "Campo obrigatório")
     private String address;
     @Positive(message = "Número inválido")
     private String number;
+    @NotBlank(message = "Campo obrigatório")
     private String neighborhood;
+    @NotBlank(message = "Campo obrigatório")
     private String city;
+    @NotBlank(message = "Escolha um...")
     private String state;
     private String complement;
     private Timestamp creationDate;

@@ -1,23 +1,20 @@
 package com.univercode.getfast.services;
 
+import com.univercode.getfast.exceptions.AccountException;
 import com.univercode.getfast.exceptions.DatabaseException;
 import com.univercode.getfast.exceptions.ResourceNotFoundException;
 import com.univercode.getfast.models.Account;
 import com.univercode.getfast.models.dtos.AccountDTO;
-import com.univercode.getfast.models.forms.AccountForm;
 import com.univercode.getfast.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.persistence.EntityNotFoundException;
-import java.security.SecureRandom;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,12 +23,6 @@ public class AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    private static final SecureRandom secureRandom = new SecureRandom();
-    private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
 
     @Transactional(readOnly = true)
     public AccountDTO findById(String id) {
@@ -44,16 +35,19 @@ public class AccountService {
     }
 
     @Transactional
-    public AccountDTO insert(AccountForm form) {
+    public AccountDTO insert(AccountDTO dto) {
+        Account verify = accountRepository.findByEmailAndDeletedFalse(dto.getEmail());
+        if (verify != null) {
+            throw new AccountException("CNPJ já cadastrado");
+        }
         Account entity = new Account();
-        copyDtoToEntity(form, entity);
-        entity.setPassword(passwordEncoder.encode(form.getPassword()));
+        copyDtoToEntity(dto, entity);
         entity = accountRepository.save(entity);
         return new AccountDTO(entity);
     }
 
     @Transactional
-    public AccountDTO update(String id, AccountForm accountDTO) {
+    public AccountDTO update(String id, AccountDTO accountDTO) {
         try {
             Account entity = accountRepository.findById(UUID.fromString(id)).orElseThrow(() -> new ResourceNotFoundException("Id não encontrado: " + id));
             copyDtoToEntity(accountDTO, entity);
@@ -78,7 +72,7 @@ public class AccountService {
         }
     }
 
-    private void copyDtoToEntity(AccountForm dto, Account entity) {
+    private void copyDtoToEntity(AccountDTO dto, Account entity) {
         entity.setName(dto.getName());
         entity.setEmail(dto.getEmail());
         entity.setTelephone(dto.getTelephone());
@@ -92,31 +86,5 @@ public class AccountService {
         entity.setState(dto.getState());
         entity.setComplement(dto.getComplement());
         entity.setLastUpdate(LocalDateTime.now());
-    }
-
-    public AccountDTO login(AccountForm form) {
-        Account account = accountRepository.findByEmailAndDeletedFalse(form.getEmail());
-        if (account == null) {
-            throw new ResourceNotFoundException("Usuário não encontrado");
-        }
-        boolean password = passwordEncoder.matches(form.getPassword(), account.getPassword());
-        if (!password) {
-            throw new ResourceNotFoundException("Senha inválida");
-        }
-
-        String token = generateNewToken();
-        Timestamp expiration = Timestamp.valueOf(LocalDateTime.now().plusHours(1));
-
-        account.setToken(token);
-        account.setExpiration(expiration);
-
-        account = accountRepository.save(account);
-        return new AccountDTO(account);
-    }
-
-    public static String generateNewToken() {
-        byte[] randomBytes = new byte[24];
-        secureRandom.nextBytes(randomBytes);
-        return base64Encoder.encodeToString(randomBytes);
     }
 }

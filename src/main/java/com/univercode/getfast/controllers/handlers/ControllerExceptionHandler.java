@@ -1,5 +1,6 @@
 package com.univercode.getfast.controllers.handlers;
 
+import com.univercode.getfast.exceptions.AccountException;
 import com.univercode.getfast.exceptions.DatabaseException;
 import com.univercode.getfast.exceptions.ResourceNotFoundException;
 import com.univercode.getfast.models.dtos.CustomErrorDTO;
@@ -39,6 +40,16 @@ public class ControllerExceptionHandler {
         for (FieldError f : e.getBindingResult().getFieldErrors()) {
             err.addError(f.getField(), f.getDefaultMessage());
         }
+
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(AccountException.class)
+    public ResponseEntity<CustomErrorDTO> accountException(AccountException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+        ValidationErrorDTO err = new ValidationErrorDTO(Instant.now(), status.value(), "Dados inválidos", request.getRequestURI());
+
+        err.addError("cnpj", e.getMessage());
 
         return ResponseEntity.status(status).body(err);
     }

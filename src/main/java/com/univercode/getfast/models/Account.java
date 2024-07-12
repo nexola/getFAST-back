@@ -18,7 +18,6 @@ public class Account extends Domain {
     private String telephone;
     private String cnpj;
     private String cpf;
-    private String password;
     private String cep;
     private String address;
     private String number;
@@ -32,13 +31,12 @@ public class Account extends Domain {
     public Account() {
     }
 
-    public Account(String name, String email, String telephone, String cnpj, String cpf, String password, String cep, String address, String number, String neighborhood, String city, String state, String complement, String token, Timestamp expiration) {
+    public Account(String name, String email, String telephone, String cnpj, String cpf, String cep, String address, String number, String neighborhood, String city, String state, String complement, String token, Timestamp expiration) {
         this.name = name;
         this.email = email;
         this.telephone = telephone;
         this.cnpj = cnpj;
         this.cpf = cpf;
-        this.password = password;
         this.cep = cep;
         this.address = address;
         this.number = number;

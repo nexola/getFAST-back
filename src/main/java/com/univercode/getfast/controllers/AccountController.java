@@ -1,7 +1,6 @@
 package com.univercode.getfast.controllers;
 
 import com.univercode.getfast.models.dtos.AccountDTO;
-import com.univercode.getfast.models.forms.AccountForm;
 import com.univercode.getfast.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +21,12 @@ public class AccountController {
     }
 
     @PostMapping
-    public ResponseEntity<AccountDTO> insert(@RequestBody @Valid AccountForm dto) {
+    public ResponseEntity<AccountDTO> insert(@RequestBody @Valid AccountDTO dto) {
         return ResponseEntity.ok(accountService.insert(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AccountDTO> update(@PathVariable String id, @RequestBody @Valid AccountForm dto) {
+    public ResponseEntity<AccountDTO> update(@PathVariable String id, @RequestBody @Valid AccountDTO dto) {
         return ResponseEntity.ok(accountService.update(id, dto));
     }
 

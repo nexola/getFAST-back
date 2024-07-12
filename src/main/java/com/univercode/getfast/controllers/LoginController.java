@@ -1,8 +1,6 @@
 package com.univercode.getfast.controllers;
 
-import com.univercode.getfast.models.dtos.AccountDTO;
 import com.univercode.getfast.models.dtos.UserDTO;
-import com.univercode.getfast.models.forms.AccountForm;
 import com.univercode.getfast.models.forms.UserForm;
 import com.univercode.getfast.services.AccountService;
 import com.univercode.getfast.services.UserService;
@@ -29,13 +27,5 @@ public class LoginController {
         UserDTO user = userService.login(form);
 
         return ResponseEntity.ok(user);
-    }
-
-    @PostMapping("/account")
-    public ResponseEntity<AccountDTO> login(@RequestBody AccountForm form) {
-
-        AccountDTO account = accountService.login(form);
-
-        return ResponseEntity.ok(account);
     }
 }
